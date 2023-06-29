@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Transaction1 = () => {
   const [result, setResult] = useState(null);
@@ -7,25 +7,20 @@ const Transaction1 = () => {
     try {
       const response = await fetch('/api/transaction1', { method: 'POST' });
       const data = await response.json();
-      setResult(data.message);
+      setResult('Transacción exitosa.');
     } catch (error) {
       console.error(error);
-      setResult('ok.');
+      setResult('Transacción incorrecta.');
     }
   };
 
-  useEffect(() => {
-    handleTransaction1();
-  }, []);
-
   return (
     <div>
-      <button disabled={result !== null} onClick={handleTransaction1} className="bg-dark text-light p-4 rounded-lg">
+      <button disabled={result !== null} onClick={handleTransaction1}>
         Transacción 1
       </button>
       {result && <p>{result}</p>}
     </div>
-    
   );
 };
 

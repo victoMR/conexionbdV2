@@ -63,31 +63,7 @@ const Operaciones = () => {
       <Transaction2 /> 
       </div>
       <br></br>
-      <button onClick={handleSearch}>Productos</button>
-      <br></br><br></br>
-      <div>
-        {/* Resultado de productos: <span>{products}</span> */}
-        {products && products.length > 0 &&(
-          <table >
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr key={product.id_product}>
-                  <td>{product.id_product}</td>
-                  <td>{product.nom_product}</td>
-                  <td>{product.desc_product}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-        </div>
+      
     </div>
   );
 
