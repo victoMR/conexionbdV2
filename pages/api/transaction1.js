@@ -4,37 +4,42 @@ const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
+    let transaction;
     try {
-      await prisma.$connect(); // Connect to the database
-      
-      const result = await prisma.$transaction(async (transaction) => {
+      //await prisma.$connect(); 
+      const result = await prisma.$transaction(async (prisma) => {
         try {
           const createdProduct = await prisma.product.create({
             data: {
-              id_product: 25,
+              id_product: 21, // Este nombre de campo es incorrecto a propósito en veces el original es id_product
               nom_product: 'Michelada',
               desc_product: 'Tremendo michelon',
-              price_product: 10,
-              id_stock1: 2, // Provide the store ID here
-              id_pro1: 2, // Provide the provider ID here
-              cat_id1: 2, // Provide the category ID here
+              price_product: 1, //eliminar debidoa que cuata un peso
+              id_stock1: 2, // Proporcionar aquí el ID de la tienda
+              id_pro1: 2, // Proporcionar aquí el ID del proveedor
+              cat_id1: 2, // Proporcionar aquí el ID de la categoría
             },
-            transaction,
-            
           });
-          res.status(200).json({ message: 'Transacción completada con éxito.', result });
-          return createdProduct; // Return the created product as the result
+          console.log("Éxito Product"); // Imprimir mensaje de éxito en la consola del servidor
+          return createdProduct; // Devolver el producto creado como resultado
         } catch (error) {
-          throw error; // Throw the error to trigger the rollback
+          res.status(500).json({ message: 'Error: No se pudo completar la transacción.' });
+     
+         // throw error; // Lanzar el error para desencadenar el rollback
         }
       });
 
-      
+      res.status(200).json({ message: 'Transacción completada con éxito.', result });
     } catch (error) {
-      console.error('Error al ejecutar la transacción:', error);
-      res.status(500).json({ message: 'Error: No se pudo completar la transacción 1.' });
+      console.log("Error:", error); // Imprimir mensaje de error en la consola del servidor
+      res.status(500).json({ message: 'Error: No se pudo completar la transacción.' });
+      if (transaction) {
+        console.log("Realizando ROLLBACK:");
+        await prisma.$queryRaw('ROLLBACK');
+        console.log("Rollback completado.");
+      }
     } finally {
-      await prisma.$disconnect(); // Disconnect from the database
+      await prisma.$disconnect(); // Desconectarse de la base de datos
     }
   } else {
     res.status(405).json({ message: 'Método no permitido.' });

@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 
 const Transaction1 = () => {
   const [result, setResult] = useState(null);
-
+  
   const handleTransaction1 = async () => {
+    
     try {
       const response = await fetch('/api/transaction1', { method: 'POST' });
       const data = await response.json();
-      setResult('Transacción exitosa.');
     } catch (error) {
       console.error(error);
-      setResult('Transacción incorrecta.');
+
     }
   };
 
