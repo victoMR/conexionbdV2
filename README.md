@@ -23,4 +23,4 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Your app is ready to be deployed!
 
-
+En este proyecto se muestra el funcionamiento de dos transacciones distintas que incluyen nuestra base de datos. 
